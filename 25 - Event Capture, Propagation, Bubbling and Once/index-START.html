@@ -13,13 +13,14 @@
     </div>
   </div>
 
+  <button>TEST</button>
 <style>
   html {
     box-sizing: border-box;
   }
-  
-  *, *:before, *:after { 
-    box-sizing: inherit; 
+
+  *, *:before, *:after {
+    box-sizing: inherit;
   }
 
   div {
@@ -40,9 +41,31 @@
   }
 </style>
 
-<button></button>
+
 <script>
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+
+  function logText(e) {
+    // stops the bubbling
+    // e.stopPropagation();
+    console.log(this.classList.value);
+  }
+
+  divs.forEach(div => div.addEventListener('click', logText, {
+    // capture: true, this option
+    capture: false,
+    // it runs once but and then it unbinds the listener
+    once: true
+  }));
+
+  button.addEventListener('click', () => console.log(button.innerText), {
+    once: true
+  });
 
 </script>
 </body>
 </html>
+
+
+
