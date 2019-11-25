@@ -12,6 +12,39 @@
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  const recognition = new SpeechRecognition();
+  // doesn't need you to stop talking to give you a result
+  recognition.interimResults = true;
+
+  let p = document.createElement('p');
+  const words = document.querySelector('.words');
+  words.appendChild(p);
+
+  recognition.addEventListener('result', e => {
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join('');
+
+    // add the transcript to the empty paragraph
+    p.textContent = transcript;
+
+    // if we finished talking, create another empty paragraph
+    if(e.results[0].isFinal) {
+      p = document.createElement('p');
+      words.appendChild(p);
+    }
+    console.log(transcript);
+
+    if(transcript.includes('get the weather')) {
+      console.log('Getting the weather...');
+    }
+  })
+
+  recognition.addEventListener('end', recognition.start);
+
+  recognition.start();
+
 
 </script>
 
@@ -40,7 +73,7 @@
       position: relative;
       line-height: 3rem;
     }
-    
+
     p {
       margin: 0 0 3rem;
     }
